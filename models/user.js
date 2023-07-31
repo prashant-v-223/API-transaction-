@@ -5,13 +5,11 @@ const jwt = require("jsonwebtoken");
 
 const user = new mongoose.Schema(
   {
-    walletaddress: { type: String, trim: true, unique: true },
+    walletaddress: { type: String, trim: true },
     email: { type: String, trim: true },
     password: { type: String, trim: true },
     isActive: { type: Boolean, default: true },
     isValid: { type: Boolean, default: true },
-    refferalId: { type: String, trim: true },
-    refferalBy: { type: String, trim: true },
   },
   {
     timestamps: true,

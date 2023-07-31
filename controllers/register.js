@@ -37,81 +37,37 @@ let transport = nodemailer.createTransport({
 exports.register = {
   signUp: async (req, res) => {
     try {
-      let uniqueRefid = await Date.now().toString(16).slice(2);
-      req.body.refferalId = uniqueRefid;
-      req.body = decodeUris(req.body);
-      console.log(req.body);
-      const refferalBygetdata = await findOneRecord(Usermodal, {
-        username: req.body.refferalBy,
+      const userdata = await findOneRecord(Usermodal, {
+        email: req.body.email,
       });
-      const walletaddress = await findOneRecord(Usermodal, {
-        walletaddress: req.body.walletaddress,
-      });
-      if (walletaddress === null) {
-        const userdata = await findOneRecord(Usermodal, {
-          email: req.body.email,
-          isActive: !false,
-          isValid: !false,
+      if (userdata !== null) {
+        return badRequestResponse(res, {
+          message: "user is already exist.",
         });
-        if (userdata !== null) {
-          return badRequestResponse(res, {
-            message: "user is already exist.",
-          });
-        } else {
-          await bcrypt.hash(req.body.password, 8).then(async (pass) => {
-            await updateRecord(
-              Usermodal,
-              {
-                email: req.body.email,
-                isActive: !false,
-                isValid: false,
-              },
-              {
-                walletaddress: req.body.walletaddress,
-                password: pass,
-              }
-            );
-          });
-          const data = await findOneRecord(Usermodal, {
-            email: req.body.email,
-            isActive: !false,
-            isValid: false,
-          });
-          if (data !== null) {
-            const profile = await Usermodal.findById(data._id).select({
-              password: 0,
-            });
-            const accessToken = jwt.sign({ profile }, "3700 0000 0000 002", {
-              expiresIn: "1hr",
-            });
-            return successResponse(res, {
-              message: "registration successfully",
-            });
-          } else {
-            const isCreated = await Usermodal({
-              ...req.body,
-            }).save();
-            if (!isCreated) {
-              return badRequestResponse(res, {
-                message: "Failed to create register!",
-              });
-            } else {
-              const profile = await Usermodal.findById(isCreated._id).select({
-                password: 0,
-              });
-              const accessToken = jwt.sign({ profile }, "3700 0000 0000 002", {
-                expiresIn: "1hr",
-              });
-              return successResponse(res, {
-                message: "registration successfully",
-              });
-            }
-          }
-        }
       } else {
-        validarionerrorResponse(res, {
-          message: `please enter valid  walletaddress.`,
+        await new Usermodal({
+          ...req.body
+        }).save();
+        // if (!isCreated) {
+        //   return badRequestResponse(res, {
+        //     message: "Failed to create register!",
+        //   });
+        // } else {
+        //   const profile = await Usermodal.findById(isCreated._id).select({
+        //     password: 0,
+        //   });
+        //   const accessToken = jwt.sign(
+        //     { profile },
+        //     "3700 0000 0000 002",
+        //     {
+        //       expiresIn: "1hr",
+        //     }
+        //   );
+        return successResponse(res, {
+          message:
+            "Ragitrarion successfully",
         });
+        // }
       }
     } catch (error) {
       return errorResponse(error, res);
