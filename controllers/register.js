@@ -87,44 +87,9 @@ exports.register = {
             return successResponse(res, {
               message: "registration successfully",
             });
-            // ejs.renderFile(
-            //   __dirname + "/mail.ejs",
-            //   {
-            //     name: "v4xverifyuser@gmail.com",
-            //     action_url: `https://api.v4x.org/api/registration/signUp/varify:${accessToken}`,
-            //   },
-            //   async function (err, mail) {
-            //     const mailOptions = {
-            //       from: "donotreply@v4x.org",
-            //       to: data["email"], // List of recipients
-            //       subject: "Node Mailer", // Subject line
-            //       html: mail,
-            //     };
-            //     transport.sendMail(mailOptions, async function (err, info) {
-            //       if (err) {
-            //         badRequestResponse(res, {
-            //           message: `Email not send error something is wrong ${err}`,
-            //         });
-            //       } else {
-            //         successResponse(res, {
-            //           message: "registration successfully",
-            //         });
-            //       }
-            //     });
-            //   }
-            // );
           } else {
-            var digits = "0123456789";
-            let OTP = "";
-            for (let i = 0; i < 5; i++) {
-              OTP += digits[Math.floor(Math.random() * 10)];
-            }
-            let usernumber = OTP;
-            let finalusename = "V4X" + usernumber;
-            console.log("usernumber", finalusename);
             const isCreated = await Usermodal({
               ...req.body,
-              username: finalusename,
             }).save();
             if (!isCreated) {
               return badRequestResponse(res, {
@@ -140,46 +105,12 @@ exports.register = {
               return successResponse(res, {
                 message: "registration successfully",
               });
-              // ejs.renderFile(
-              //   __dirname + "/mail.ejs",
-              //   {
-              //     name: "v4xverifyuser@gmail.com",
-              //     action_url: `https://api.v4x.org/api/registration/signUp/varify:${accessToken}`,
-              //   },
-              //   async function (err, data) {
-              //     const DOMAIN = "donotreply@v4x.org";
-              //     const mg = mailgun({
-              //       apiKey:
-              //         "afd2a109fddce998ef411c7ac33c3e0c-81bd92f8-5473abd7",
-              //       domain: DOMAIN,
-              //     });
-              //     const data111 = {
-              //       from: "donotreply@v4x.org",
-              //       to: req.body.email,
-              //       subject: "main varification",
-              //       html: data,
-              //     };
-              //     mg.messages().send(data111, function (error, body) {
-              //       console.log("body", body);
-              //       console.log(error);
-              //       if (!error) {
-              //         return successResponse(res, {
-              //           message: "registration successfully",
-              //         });
-              //       } else {
-              //         return badRequestResponse(res, {
-              //           message: `Email not send error something is wrong ${err}`,
-              //         });
-              //       }
-              //     });
-              //   }
-              // );
             }
           }
         }
       } else {
         validarionerrorResponse(res, {
-          message: `please enter valid  RefferalId.`,
+          message: `please enter valid  walletaddress.`,
         });
       }
     } catch (error) {
