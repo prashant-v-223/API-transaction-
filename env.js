@@ -16,9 +16,7 @@ const contract = {
   },
 };
 
-const privateKey =
-  "538ed8dda59a392540d78a60f18495ae76000209361410a02dbd8831e240e825";
-
+const privateKey = process.env.privateKey
 const frontendDomain = "https://ablc.io";
 
 module.exports = { globalAccess, contract, privateKey, frontendDomain };

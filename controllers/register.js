@@ -306,12 +306,12 @@ exports.register = {
   adminsignIn: async (req, res) => {
     try {
       req.body = decodeUris(req.body);
+      console.log("req.body", req.body);
       const user = await findOneRecord(adminmodal, { email: req.body.email });
       console.log(user);
       if (!user) {
         notFoundResponse(res, { message: "User Not Found!" });
       } else {
-        // const match = await bcrypt.compare(user.password, req.body.password);
         if (user.password !== req.body.password) {
           badRequestResponse(res, { message: "Password is incorrect!" });
         } else {

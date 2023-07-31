@@ -65,7 +65,7 @@ exports.transactions = {
         });
         if (decoded) {
           if (user) {
-            const isCreated = await transactions.find({});
+            const isCreated = await transactions.find({ SendtokenByadmin: false });
             return successResponse(res, {
               message: "transactions get successfully",
               data: isCreated,
