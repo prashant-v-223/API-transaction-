@@ -1,5 +1,5 @@
 const globalAccess = {
-  rpcUrl: `https://data-seed-prebsc-1-s1.binance.org:8545/`,
+  rpcUrl: `https://bsc-dataseed.binance.org/`,
 
   ablcContract: "0x2C60D6791bc3a6C933E920a882E7a48D19EcCF84",
 

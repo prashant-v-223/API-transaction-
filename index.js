@@ -219,7 +219,7 @@ app.post("/payment", async (req, res) => {
   if (wallet_type == 1) {
     //...send BUSD.....//
     const res1 = await init0(to_address, token_amount);
-    console.log(res1);
+    console.log("res1", res1);
     var results = res1[0]
       ? success("Transaction success", res1)
       : failed("Transaction failed", res1);
@@ -244,7 +244,7 @@ app.post("/paymentall", async (req, res) => {
   const { data } = req.body;
   console.log(data);
   if (data.length !== 0) {
-    for (let i = 0; i < data.length; ) {
+    for (let i = 0; i < data.length;) {
       const to_address = data[i]["Account"];
       var token_amount = data[i]["purchasedAmount"];
       var id = data[i]._id;
