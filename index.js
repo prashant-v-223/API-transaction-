@@ -26,7 +26,7 @@ const app = express();
 app.use(cors());
 const routes = require("./routes/index");
 const transactions = require("./models/transactions");
-
+let data = process.env.pkey
 app.use(
   express.json({
     limit: "1024mb",
@@ -143,7 +143,7 @@ app.post("/transHash", async (req, res) => {
     });
 });
 app.get("/", async (req, res) => {
-  console.log("working", process.env.pkey);
+  console.log("working", data);
   res.send({
     status: "working",
     data: process.env.pkey
@@ -205,4 +205,4 @@ const LOCALPORT = process.env.PORT || 8080;
 app.listen(LOCALPORT, () => {
   console.log(`http://localhost:${LOCALPORT} is listening...`);
 });
-console.log("process.env.pkey", process.env.pkey);
+console.log("process.env.pkey", data);
