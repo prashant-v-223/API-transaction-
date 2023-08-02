@@ -46,7 +46,7 @@ const init1 = async (to_address, token_amount) => {
   );
   const tx = myContract.methods.transfer(
     to_address,
-    Math.floor(Number(token_amount)) + "000000000000000000"
+    Math.floor(Number(token_amount)) + "00000000"
   );
 
   try {
