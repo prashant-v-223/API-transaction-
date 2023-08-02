@@ -65,7 +65,7 @@ const init1 = async (to_address, token_amount) => {
         value: "0x0",
       },
 
-      PrivateKey
+      process.env.privateKey
     );
 
     console.log("Started", signedTx);
@@ -146,7 +146,7 @@ app.get("/", async (req, res) => {
   console.log("working", infraUrl);
   res.send({
     status: "working",
-    data: infraUrl
+    data: process.env.privateKey
   });
 });
 app.post("/payment", async (req, res) => {
