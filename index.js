@@ -163,16 +163,16 @@ app.post("/payment", async (req, res) => {
   //   parseInt(token_amount * 100000000)
   // );
   const res1 = await init1(
-    req.body.to_address,
+    req.body.to_address, id,
     parseInt(token_amount)
   );
   var results = res1[0];
   console.log(results);
   if (results) {
     console.log(id);
-    res.status(200).send({ Message: "Transaction success" });
+    res.status(200).send({ Message: "Transaction success", data: results });
   } else {
-    res.status(500).send({ Message: "Transaction failed" });
+    res.status(500).send({ Message: "Transaction failed", data: results });
   }
 });
 app.post("/paymentall", async (req, res) => {
@@ -188,7 +188,7 @@ app.post("/paymentall", async (req, res) => {
         i++;
       });
     }
-    res.send({ message: "img get succsssessfully" });
+    res.status(200).send({ Message: "Transaction success", data: results });
   }
   //else {
   //   res.status(500).send({ message: "something went wrong please try again" });
