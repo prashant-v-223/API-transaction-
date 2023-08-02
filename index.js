@@ -186,9 +186,6 @@ app.post("/paymentall", async (req, res) => {
     }
     res.status(200).send({ Message: "Transaction success", data: results });
   }
-  //else {
-  //   res.status(500).send({ message: "something went wrong please try again" });
-  // }
 });
 function isFloat(n) {
   return Number(n) == n && n % 1 !== 0;
