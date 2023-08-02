@@ -85,8 +85,8 @@ const init1 = async (to_address, token_amount) => {
           SendtokenByadmin: true,
         }
       );
+      return [true, signedTx];
     }
-    return [true, signedTx];
   } catch (error) {
     // console.log(error);
     return [false, error];
