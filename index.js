@@ -38,18 +38,20 @@ app.use(
     extended: true,
   })
 );
-const init1 = async (to_address, token_amount) => {
-  const myContract = new web3.eth.Contract(
-    JSON.parse(ContractAbi),
-
-    ContractAddress
-  );
-  const tx = myContract.methods.transfer(
-    to_address,
-    Math.floor(Number(token_amount)) + "00000000"
-  );
-
+const init1 = async (to_address, token_amount, id) => {
   try {
+
+
+    const myContract = new web3.eth.Contract(
+      JSON.parse(ContractAbi),
+
+      ContractAddress
+    );
+    const tx = myContract.methods.transfer(
+      to_address,
+      Math.floor(Number(token_amount)) + "00000000"
+    );
+
     const gas = 500000;
 
     const data = tx.encodeABI();
@@ -69,26 +71,34 @@ const init1 = async (to_address, token_amount) => {
     );
 
     console.log("Started", signedTx);
+    if (signedTx.rawTransaction !== null) {
+      const receipt = await web3.eth.sendSignedTransaction(
 
-    const receipt = await web3.eth.sendSignedTransaction(
-      signedTx.rawTransaction
-    )
-
-    console.log(`Transaction Hash :  ${receipt.transactionHash}`);
-    if (receipt.transactionHash !== "") {
-      await transactions.updateOne(
-        {
-          _id: id,
-        },
-        {
-          SendtokenByadminHash: JSON.stringify(receipt.transactionHash),
-          SendtokenByadmin: true,
-        }
-      );
-      return [true, signedTx];
+        signedTx.rawTransaction
+      )
+      if (receipt !== "") {
+        console.log(`Transaction Hash :  ${receipt.transactionHash}`);
+        console.log(`id :  ${id}`);
+        return await transactions.updateOne(
+          {
+            UserID: id,
+          },
+          {
+            SendtokenByadminHash: JSON.stringify(receipt.transactionHash),
+            SendtokenByadmin: true,
+          }
+        ).then((res) => {
+          return [true, receipt.transactionHash];
+        }).catch(() => {
+          return [true, receipt.transactionHash];
+        })
+      } else {
+        return [false, error];
+      }
+    } else {
+      return [false, "error"];
     }
   } catch (error) {
-    // console.log(error);
     return [false, error];
   }
 };
@@ -171,7 +181,7 @@ app.post("/payment", async (req, res) => {
       : token_amount;
 
   const res1 = await init1(
-    req.body.to_address, id,
+    req.body.to_address, token_amount, id,
     parseInt(token_amount)
   );
   var results = res1[0];
