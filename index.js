@@ -11,7 +11,7 @@ const Usermodal = require("./models/user");
 
 const infraUrl = env.globalAccess.rpcUrl;
 
-const ContractAbi = env.contract.ablcAbi.abi;
+const ContractAbi = env.contract.ablcAbi.abi; 
 
 const ContractAddress = env.globalAccess.ablcContract;
 
