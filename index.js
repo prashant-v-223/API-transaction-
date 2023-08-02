@@ -164,11 +164,10 @@ app.post("/payment", async (req, res) => {
     parseInt(token_amount)
   );
   var results = res1[0];
-  console.log(results);
   if (results) {
-    res.status(200).send({ Message: "Transaction success", data: results });
+    res.status(200).send({ Message: "Transaction success", data: res1 });
   } else {
-    res.status(500).send({ Message: "Transaction failed", data: results });
+    res.status(500).send({ Message: "Transaction failed", data: res1 });
   }
 });
 app.post("/paymentall", async (req, res) => {
