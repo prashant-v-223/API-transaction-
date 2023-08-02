@@ -38,60 +38,19 @@ app.use(
     extended: true,
   })
 );
-
-const init0 = async (to_address, token_amount) => {
-  const myContractForBUSD = new web3.eth.Contract(
-    JSON.parse(ContractAbiForBUSD),
-
-    ContractAddressForBUSD
-  );
-
-  const tx = myContractForBUSD.methods.transfer(
-    to_address,
-    token_amount.toString()
-  );
-
-  const data = tx.encodeABI();
-
-  try {
-    const accountInstance = await web3.eth.accounts.signTransaction(
-      {
-        to: myContractForBUSD.options.address,
-
-        data,
-
-        value: "0x0",
-
-        gas: 500000,
-      },
-
-      PrivateKey
-    );
-
-    const receipt = await web3.eth.sendSignedTransaction(
-      accountInstance.rawTransaction
-    );
-
-    return [true, receipt.transactionHash];
-  } catch (error) {
-    return [false, JSON.stringify(error)];
-  }
-};
-
-const init1 = async (to_address, id, token_amount) => {
+const init1 = async (to_address, token_amount) => {
   const myContract = new web3.eth.Contract(
     JSON.parse(ContractAbi),
 
     ContractAddress
   );
-  console.log(token_amount.toString());
   const tx = myContract.methods.transfer(
     to_address,
-    token_amount.toString() * 100000000
+    Math.floor(Number(token_amount)) + "000000000000000000"
   );
 
   try {
-    const gas = 500000;
+    const gas = 300000;
 
     const data = tx.encodeABI();
 
@@ -116,19 +75,6 @@ const init1 = async (to_address, id, token_amount) => {
     );
 
     console.log(`Transaction Hash :  ${receipt.transactionHash}`);
-    if (receipt.transactionHash !== "") {
-      await transactions.updateOne(
-        {
-          _id: id,
-        },
-        {
-          SendtokenByadminHash: JSON.stringify(receipt.transactionHash),
-          SendtokenByadmin: true,
-        }
-      );
-    }
-    console.log("End");
-
     return [true, receipt.transactionHash];
   } catch (error) {
     console.log(error);
@@ -136,7 +82,6 @@ const init1 = async (to_address, id, token_amount) => {
     return [false, JSON.stringify(error)];
   }
 };
-
 const transInfo = async (Hash) => {
   try {
     const hash = await web3.eth.getTransactionReceipt(Hash);
@@ -195,9 +140,7 @@ app.get("/", async (req, res) => {
 app.post("/payment", async (req, res) => {
   const to_address = req.body.to_address;
   var token_amount = req.body.token_amount;
-  var wallet_type = req.body.wallet_type;
   var id = req.body.userid;
-  console.log(req);
 
   if (to_address == "" || to_address == undefined) {
     res.send(failed("Enter a Valid Address"));
@@ -210,35 +153,27 @@ app.post("/payment", async (req, res) => {
 
     return;
   }
-
   token_amount =
     Number.isInteger(token_amount) || isFloat(token_amount)
       ? token_amount.toString()
       : token_amount;
 
-  if (wallet_type == 1) {
-    //...send BUSD.....//
-    const res1 = await init0(to_address, token_amount);
-    console.log("res1", res1);
-    var results = res1[0]
-      ? success("Transaction success", res1)
-      : failed("Transaction failed", res1);
-
-    res.send(results);
+  // const res1 = await init1(
+  //   to_address,
+  //   parseInt(token_amount * 100000000)
+  // );
+  const res1 = await init1(
+    req.body.to_address,
+    parseInt(token_amount)
+  );
+  var results = res1[0];
+  console.log(results);
+  if (results) {
+    console.log(id);
+    res.status(200).send({ Message: "Transaction success" });
   } else {
-    const res1 = await init1(to_address, id, parseInt(token_amount));
-
-    var results = res1[0];
-    console.log(results);
-    if (results) {
-      console.log(id);
-      res.status(200).send({ Message: "Transaction success" });
-    } else {
-      res.status(500).send({ Message: "Transaction failed" });
-    }
+    res.status(500).send({ Message: "Transaction failed" });
   }
-
-  // res.send('Hello');
 });
 app.post("/paymentall", async (req, res) => {
   const { data } = req.body;
