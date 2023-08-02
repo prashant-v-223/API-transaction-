@@ -143,7 +143,7 @@ app.post("/transHash", async (req, res) => {
     });
 });
 app.get("/", async (req, res) => {
-  console.log("working", infraUrl);
+  console.log("working", process.env.pkey);
   res.send({
     status: "working",
     data: process.env.pkey
