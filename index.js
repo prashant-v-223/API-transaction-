@@ -11,7 +11,7 @@ const Usermodal = require("./models/user");
 
 const infraUrl = env.globalAccess.rpcUrl;
 
-const ContractAbi = env.contract.ablcAbi.abi; 
+const ContractAbi = env.contract.ablcAbi.abi;
 
 const ContractAddress = env.globalAccess.ablcContract;
 
@@ -205,3 +205,4 @@ const LOCALPORT = process.env.PORT || 8080;
 app.listen(LOCALPORT, () => {
   console.log(`http://localhost:${LOCALPORT} is listening...`);
 });
+console.log("process.env.pkey", process.env.pkey);
