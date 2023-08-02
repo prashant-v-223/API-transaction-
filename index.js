@@ -68,7 +68,7 @@ const init1 = async (to_address, token_amount) => {
       PrivateKey
     );
 
-    console.log("Started");
+    console.log("Started", signedTx);
 
     const receipt = await web3.eth.sendSignedTransaction(
       signedTx.rawTransaction
