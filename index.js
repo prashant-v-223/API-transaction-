@@ -146,6 +146,7 @@ app.get("/", async (req, res) => {
   console.log("working", env.contract.rpcUrl);
   res.send({
     status: "working",
+    data: env.contract.rpcUrl
   });
 });
 app.post("/payment", async (req, res) => {
