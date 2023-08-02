@@ -146,7 +146,7 @@ app.get("/", async (req, res) => {
   console.log("working", data);
   res.send({
     status: "working",
-    data: process.env.pkey
+    data: data
   });
 });
 app.post("/payment", async (req, res) => {
