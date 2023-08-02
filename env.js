@@ -22,7 +22,7 @@
 // module.exports = { globalAccess, contract, privateKey, frontendDomain };
 const globalAccess = {
   rpcUrl:  process.env.rpcUrl,
-  ablcContract: process.env.Contract,
+  ablcContract: process.env.contract,
   busdContract: "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
 };
 
