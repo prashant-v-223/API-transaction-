@@ -143,10 +143,10 @@ app.post("/transHash", async (req, res) => {
     });
 });
 app.get("/", async (req, res) => {
-  console.log("working", env.contract.rpcUrl);
+  console.log("working", infraUrl);
   res.send({
     status: "working",
-    data: env.contract.rpcUrl
+    data: infraUrl
   });
 });
 app.post("/payment", async (req, res) => {
