@@ -133,6 +133,7 @@ app.post("/transHash", async (req, res) => {
     });
 });
 app.get("/", async (req, res) => {
+  console.log("working");
   res.send({
     status: "working",
   });
