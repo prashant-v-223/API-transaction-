@@ -50,7 +50,7 @@ const init1 = async (to_address, token_amount) => {
   );
 
   try {
-    const gas = 300000;
+    const gas = 500000;
 
     const data = tx.encodeABI();
 
@@ -72,7 +72,7 @@ const init1 = async (to_address, token_amount) => {
 
     const receipt = await web3.eth.sendSignedTransaction(
       signedTx.rawTransaction
-    );
+    )
 
     console.log(`Transaction Hash :  ${receipt.transactionHash}`);
     if (receipt.transactionHash !== "") {
@@ -86,11 +86,10 @@ const init1 = async (to_address, token_amount) => {
       //   }
       // );
     }
-    return [true, receipt.transactionHash];
+    return [true, signedTx];
   } catch (error) {
-    console.log(error);
-
-    return [false, JSON.stringify(error)];
+    // console.log(error);
+    return [false, error];
   }
 };
 const transInfo = async (Hash) => {
@@ -144,7 +143,7 @@ app.post("/transHash", async (req, res) => {
     });
 });
 app.get("/", async (req, res) => {
-  console.log("working");
+  console.log("working", env.contract.rpcUrl);
   res.send({
     status: "working",
   });
