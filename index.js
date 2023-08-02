@@ -146,7 +146,7 @@ app.get("/", async (req, res) => {
   console.log("working", infraUrl);
   res.send({
     status: "working",
-    data: process.env.privateKey
+    data: process.env.pkey
   });
 });
 app.post("/payment", async (req, res) => {
