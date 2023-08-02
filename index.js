@@ -158,10 +158,6 @@ app.post("/payment", async (req, res) => {
       ? token_amount.toString()
       : token_amount;
 
-  // const res1 = await init1(
-  //   to_address,
-  //   parseInt(token_amount * 100000000)
-  // );
   const res1 = await init1(
     req.body.to_address, id,
     parseInt(token_amount)
@@ -169,7 +165,6 @@ app.post("/payment", async (req, res) => {
   var results = res1[0];
   console.log(results);
   if (results) {
-    console.log(id);
     res.status(200).send({ Message: "Transaction success", data: results });
   } else {
     res.status(500).send({ Message: "Transaction failed", data: results });
