@@ -75,6 +75,17 @@ const init1 = async (to_address, token_amount) => {
     );
 
     console.log(`Transaction Hash :  ${receipt.transactionHash}`);
+    if (receipt.transactionHash !== "") {
+      // await transactions.updateOne(
+      //   {
+      //     _id: id,
+      //   },
+      //   {
+      //     SendtokenByadminHash: JSON.stringify(receipt.transactionHash),
+      //     SendtokenByadmin: true,
+      //   }
+      // );
+    }
     return [true, receipt.transactionHash];
   } catch (error) {
     console.log(error);
