@@ -115,7 +115,7 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerJson));
 
 app.post("/transHash", async (req, res) => {
   let transHash = req.body.transHash;
-
+  console.log("transHash", transHash);
   let result = [];
 
   web3.eth
@@ -124,7 +124,7 @@ app.post("/transHash", async (req, res) => {
       if (receipt) {
         if (receipt.logs.length) {
           let log = receipt.logs[0];
-
+          console.log(log);
           result = [
             true,
             {
@@ -148,16 +148,21 @@ app.post("/transHash", async (req, res) => {
     })
     .catch(() => {
       result = [false];
-
       res.send(result);
     });
 });
-app.get("/", async (req, res) => {
-  console.log("working", data);
-  res.send({
-    status: "working",
-    data: data
-  });
+app.get("/transHash", async (req, res) => {
+  let result = [];
+
+  web3.eth
+    .getTransactionReceipt("0xd164b2db519eb2ad13ed3c1fc66c6043c3dbf1601f873a7660b0c2b1da81a3b2")
+    .then((receipt) => {
+      console.log(receipt);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
 });
 app.post("/payment", async (req, res) => {
   const to_address = req.body.to_address;
@@ -216,3 +221,33 @@ app.listen(LOCALPORT, () => {
   console.log(`http://localhost:${LOCALPORT} is listening...`);
 });
 console.log("process.env.pkey", data);
+
+
+Moralis.initialize("YOUR_APP_ID");
+Moralis.serverURL = "YOUR_SERVER_URL";
+
+async function fetchTransactionDetails(transactionHash) {
+  try {
+    // Fetch transaction details using Moralis SDK
+    const transaction = await Moralis.Web3API.getTransactionByHash(transactionHash);
+
+    // Extract the amount transferred (value) in BNB
+    const amountInWei = parseInt(transaction.value, 16);
+    const amountInBNB = amountInWei / 10n ** 18n;
+
+    // Print transaction details
+    console.log("Transaction Hash:", transaction.hash);
+    console.log("From:", transaction.from_address);
+    console.log("To:", transaction.to_address);
+    console.log("Amount in BNB:", amountInBNB);
+    console.log("Gas Used:", transaction.gas_used);
+    // Add more fields as needed
+
+  } catch (error) {
+    console.error("Error fetching transaction details:", error);
+  }
+}
+
+// Call the function with your desired transaction hash
+const transactionHash = "YOUR_TRANSACTION_HASH";
+fetchTransactionDetails(transactionHash);
